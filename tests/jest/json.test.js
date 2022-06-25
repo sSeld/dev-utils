@@ -95,3 +95,9 @@ describe('CSV - Array Root', () => {
         expect(result).toBe(expectedResult)
     });
 });
+
+describe('CSV - Object Root', () => {
+    it('should ', () => {
+        
+    });
+});
