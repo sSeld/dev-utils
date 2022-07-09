@@ -7,7 +7,7 @@ export function convertJsonToCSV(jsonString) {
         result = `${propertyHeaders}\n`
         let rows = [];
         parsedJson.forEach(i => {
-            rows.push(`${buildRow(propertyHeaders, i)}`);//`\n${Object.values(i).join(',')}`
+            rows.push(`${buildRow(propertyHeaders, i)}`);
         })
         result += rows.join('');
 
