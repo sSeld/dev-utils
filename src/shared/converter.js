@@ -51,3 +51,27 @@ function buildRow(headers, obj) {
     }
     return `${result.join(',')}\n`;
 }
+
+export function convertCSVToJson(csvString) {
+    let result;
+
+    let rows = csvString.split('\r\n');
+    if (rows[rows.length - 1] === '') {
+        rows.pop();
+    }
+
+    let properties = rows[0].split(',');
+
+    let results = []
+    for (let i = 1; i < rows.length; i++) {
+        let row = rows[i];
+        let values = row.split(',');
+        let obj = {};
+        for (let i = 0; i < values.length; i++) {
+            obj[properties[i]] = values[i];
+        }
+        results.push(obj);
+    }
+
+    return `${JSON.stringify(results)}`;
+}
