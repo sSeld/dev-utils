@@ -1,18 +1,33 @@
 <h1>Convert all the things</h1>
 
 <script>
+    import * as converter from '../shared/converter.js';
+
     let input = null;
     let output = null;
+    let validationError;
+
+    $: {
+        if (input) {
+            try {
+                JSON.parse(input);
+                // invalid=false;
+                validationError = '';
+            } catch (e) {
+                validationError = 'Invalid JSON provided, try again'
+            }
+        } else {
+            validationError = 'No JSON provided'
+        }
+    }
+
     function convert(i) {
-        console.log('convert', i);
-        let obj = JSON.parse(i);
-        if (obj instanceof Array){
-            console.log('array as root');
-            output = obj[0];
-        }
-        else {
-            console.log('obj as root');
-        }
+        output = converter.convertJsonToCSV(i);
+    }
+
+    function clear() {
+        input = null;
+        output = null;
     }
 
 </script>
@@ -20,7 +35,10 @@
 <div class="flex-container" style="height: 40em; width: 100%;">
     <section class="flex-item input">
         <h2>JSON</h2>
-        <input type="text" class="input" bind:value={input}/>
+        {#if validationError}
+            <p style="color: red">{validationError}</p>
+        {/if}
+        <textarea class="input" rows="10" cols="50" bind:value={input}></textarea>
     </section>
     <section>
         <h2>Conversions</h2>
@@ -28,13 +46,20 @@
     </section>
     <section class="flex-item output">
         <h2>Output</h2>
-        <input type="text" class="output" bind:value={output} disabled/>
+        <textarea class="output" rows="10" cols="50" bind:value={output} disabled></textarea>
+    </section>
+    <section class="flex-item">
+        <h2>Output Actions</h2>
+        {#if input || output}
+            <button on:click={clear(input)}>Clear</button>
+        {/if}
     </section>
 </div>
 <style>
     .input, .output {
         height: 100%;
         width: 50%;
+        resize: none;
     }
 
     .flex-container {
