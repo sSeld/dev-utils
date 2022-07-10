@@ -55,7 +55,9 @@ function buildRow(headers, obj) {
 export function convertCSVToJson(csvString) {
     let result;
 
-    let rows = csvString.split('\r\n');
+    //identify line ending
+    let lineEnding = identifyLineEnding(csvString);
+    let rows = csvString.split(lineEnding);
     if (rows[rows.length - 1] === '') {
         rows.pop();
     }
@@ -73,5 +75,22 @@ export function convertCSVToJson(csvString) {
         results.push(obj);
     }
 
-    return `${JSON.stringify(results)}`;
+    return `${JSON.stringify(results)}${lineEnding}`;
+}
+
+function identifyLineEnding(input) {
+    const pattern = /(\n*)/;
+    const newline = input.match(/\n/g).length ?? 0 ;
+
+    const creturn = input.match(/\r/g)?.length ?? 0;
+    const creturnLinefeed = input.match(/\r\n/g)?.length ?? 0;
+
+
+    if (creturnLinefeed === creturn && creturnLinefeed === newline) {
+        return '\r\n';
+    } else if (newline > creturn && newline > creturnLinefeed) {
+        return '\n';
+    } else {
+        return '\r';
+    }
 }

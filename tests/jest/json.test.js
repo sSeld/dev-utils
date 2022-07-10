@@ -1,4 +1,5 @@
 import * as converter from '../../src/shared/converter.js';
+import {re} from "@babel/core/lib/vendor/import-meta-resolve.js";
 
 class FormatScenario {
     constructor(name, columns, value) {
@@ -117,12 +118,77 @@ describe('Other', () => {
     });
 })
 
+const LINE_ENDINGS = ['\r', '\n', '\r\n'];
+
+class CSVTestCase {
 
 
+    constructor(name, csv, json, delimiter = ',', lineEnding = LINE_ENDINGS[2]) {
+        this.name = name;
+        this.rawCsv = csv;
+        this.rawJson = json;
+        this.delimiter = delimiter;
+        this.lineEnding = lineEnding;
+    }
+
+    json() {
+        if( typeof this.rawJson  == 'string'){
+            return `${JSON.stringify(JSON.parse(this.rawJson), null, 0)}${this.lineEnding}`;
+        }else {
+            // json object passed in
+            return `${JSON.stringify(this.rawJson, null,0)}${this.lineEnding}`
+        }
+    }
+
+    csv() {
+        let result = '';
+        for (const csvRow in this.rawCsv) {
+            result += `${this.rawCsv[csvRow].join(this.delimiter)}${this.lineEnding}`;
+        }
+        return result;
+    }
+}
+
+const csvSimpleCase = new CSVTestCase('simple',
+    [
+        ["id", "first", "last"],
+        ["5", "jimmy", "coder"]
+    ]
+    ,
+    `
+    [
+        {
+            "id": "5",
+            "first": "jimmy",
+            "last": "coder"
+        }
+    ]
+    `
+);
+
+
+const csvSimpleCaseUnixEOL = new CSVTestCase('simpleUnixEOL', csvSimpleCase.rawCsv, csvSimpleCase.rawJson, ',', '\n');
 
 
 describe('CSV>JSON - Format Rules', () => {
-    it('should ', () => {
+    xit('should handle different delimiters', () => {
 
+    });
+    xit('should result in json array', () => {
+    });
+    xit('should end in a new line', () => {
+
+    });
+    it('should handle unix vs windows line endings', () => {
+        const input = csvSimpleCaseUnixEOL.csv();
+        let expectedResult = csvSimpleCaseUnixEOL.json();
+        let result = converter.convertCSVToJson(input);
+        expect(result).toBe(expectedResult);
+    });
+    xit('should try to convert numbers', () => {
+        const input = csvSimpleCase.csv();
+        let expectedResult = csvSimpleCase.json();
+        let result = converter.convertCSVToJson(input);
+        expect(result).toBe(expectedResult);
     });
 });
