@@ -1,144 +1,103 @@
-<h1>Convert all the things</h1>
-
 <script>
 
     import * as converter from '../shared/converter.js';
     import * as file from '../shared/file.js';
 
-    let input = null;
-    let output = null;
-    let validationError;
+    let leftInput = null;
+    let rightInput = null;
+    let leftNotification, rightNotification;
 
 
     let inputBrowseFile;
     $: {
-        if (input) {
+        if (leftInput) {
             try {
-                JSON.parse(input);
-                // invalid=false;
-                validationError = '';
+                JSON.parse(leftInput);
+                leftNotification = '';
             } catch (e) {
-                validationError = 'Invalid JSON provided, try again'
+                leftNotification = 'Invalid JSON provided, try again'
             }
         } else {
-            validationError = 'No JSON provided'
+            leftNotification = 'No JSON provided'
+        }
+
+        if (rightInput) {
+            //todo: validate csv
         }
     }
 
     function convert(i) {
-        output = converter.convertJsonToCSV(i);
+        rightInput = converter.convertJsonToCSV(i);
     }
 
     function clear() {
-        input = null;
-        output = null;
+        leftInput = null;
+        rightInput = null;
     }
 
     async function fileBrowse(event) {
         let result = await file.readFile(event.target.files[0]);
-        input = result;
+        leftInput = result;
     }
 
     async function fileBrowseCsv(event) {
         let result = await file.readFile(event.target.files[0]);
-        output = result;
+        rightInput = result;
     }
 
     function convertOutput(output) {
-        input = converter.convertCSVToJson(output);
-
+        leftInput = converter.convertCSVToJson(output);
     }
 </script>
 
-<div class="container">
-    <div id="notifications" class="row">
-        <div class="col">
-            {#if validationError}
-                <p class="center" style="color: red">{validationError}</p>
+<div class="container mx-auto px-4">
+    <div id="notifications" class="grid grid-cols-3 grid-rows-1">
+        <div class="w-full">
+            {#if leftNotification}
+                <p>{leftNotification}</p>
+            {/if}
+        </div>
+        <div class="w-full">
+        </div>
+        <div class="w-full">
+            {#if rightNotification}
+                <p>{rightNotification}</p>
             {/if}
         </div>
     </div>
-    <div class="row">
-        <div id="left" class="col">
-            <h2>JSON</h2>
-            <textarea class="input" rows="6" cols="50" bind:value={input}></textarea>
-        </div>
-        <div id="conversions" class="col">
-            <h2>Conversions</h2>
-            <button on:click={convert(input)}> To CSV --></button>
-            <button on:click={convertOutput(output)}>  To JSON </button>
 
-            {#if input || output}
-                <button on:click={clear(input)}>Clear</button>
-            {/if}
+
+    <div class="grid grid-cols-2 grid-rows-1">
+
+        <div class="card w-96 bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">JSON</h2>
+                <textarea class="textarea textarea-primary resize-none" bind:value={leftInput}></textarea>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary" on:click={convert(leftInput)}>To CSV</button>
+                </div>
+
+                    <input type="file" accept=".json" class="file-input" on:change={fileBrowse}/>
+
+            </div>
         </div>
-        <div id="right" class="col">
-            <h2>Output</h2>
-            <textarea class="output" rows="6" cols="50" bind:value={output}></textarea>
+        <div class="card w-96 bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">CSV</h2>
+                <textarea class="textarea textarea-primary resize-none" bind:value={rightInput}></textarea>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary" on:click={convertOutput(rightInput)}>To JSON</button>
+                </div>
+                <input type="file" accept=".json" class="file-input" on:change={fileBrowse}/>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 grid-rows-1">
+            <button class="btn btn-primary" on:click={clear(leftInput)} disabled="{!leftInput && !rightInput}">Clear</button>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <label for="browseFile">Browse for json file</label>
-            <input id="browseFile" type="file" accept=".json"
-                   on:change={fileBrowse}/>
-        </div>
-        <div class="col"></div>
-        <div class="col">
-            <label for="browseFileCsv">Browse for csv file</label>
-            <input id="browseFileCsv" type="file" accept=".csv"
-                   on:change={fileBrowseCsv}/>
-        </div>
-    </div>
+
+
 </div>
 <style>
-    .input, .output {
-        resize: none;
-    }
-
-    .flex-container {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-evenly;
-        row-gap: 10px;
-        column-gap: 10px;
-    }
-
-    .flex-item {
-        flex-basis: auto;
-    }
-
-    .center {
-        justify-content: center;
-        align-content: center;
-        align-items: center;
-    }
-
-    .container {
-        width: 100%
-    }
-
-    .row {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        width: 100%;
-    }
-
-    .col {
-        flex-direction: column;
-        flex-basis: 100%;
-        flex: 1;
-    }
-    .col-2 {
-        flex-direction: column;
-        flex-basis: 100%;
-        flex: 2;
-    }
-    .col-4 {
-        flex-direction: column;
-        flex-basis: 100%;
-        flex: 4;
-    }
-
 </style>
