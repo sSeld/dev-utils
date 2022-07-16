@@ -10,6 +10,7 @@
     <div class="flex-none">
         <ul class="menu menu-horizontal p-0">
             <li><a href="/csv-json">CSV/JSON</a></li>
+            <li><a href="/form-gen">Form Generator</a></li>
         </ul>
     </div>
 </div>

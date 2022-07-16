@@ -1,0 +1,26 @@
+{
+    
+[
+    {
+        "displayName": null,
+        "modelName": "name",
+        "defaultValue": ""
+    },
+    {
+        "displayName": null,
+        "modelName": "username",
+        "defaultValue": ""
+    },
+    {
+        "displayName": null,
+        "modelName": "github",
+        "defaultValue": ""
+    },
+    {
+        "displayName": null,
+        "modelName": "favLanguage",
+        "defaultValue": ""
+    }
+    
+]
+}

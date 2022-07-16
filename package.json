@@ -42,6 +42,8 @@
     "typescript": "^4.7.2"
   },
   "dependencies": {
-    "daisyui": "^2.19.0"
+    "daisyui": "^2.19.0",
+    "file-saver": "^2.0.5",
+    "mustache": "^4.2.0"
   }
 }

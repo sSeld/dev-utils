@@ -1,0 +1,59 @@
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {Validators} from '@angular/forms';
+import {FormArray} from '@angular/forms';
+
+
+@Component({
+    selector: 'app-profile-editor',
+    template: `
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+{{#controls}}
+    <label for="{{modelName}}">{{displayName}}: </label>
+    <input id="{{modelName}}" type="text" formControlName="{{modelName}}">
+{{/controls}}
+
+    <p>Complete the form to enable button.</p>
+    <button type="submit" [disabled]="!form.valid">Submit</button>
+</form>
+
+<hr>
+
+<p>Form Value: {{=<% %>=}}{{ form.value | json }}<%={{ }}=%></p>
+
+<p>Form Status: {{=<% %>=}}{{ form.status }}<%={{ }}=%></p>
+
+`,
+    styles: [`
+form {
+    padding-top: 1rem;
+}
+
+label {
+    display: block;
+    margin: .5em 0;
+    font-weight: bold;
+}
+`]
+})
+export class ProfileEditorComponent {
+{{#interface}}
+    @Input('model') model = null;
+    {{/interface}}
+
+    @Output('onSubmit') onSubmit = new EventEmitter();
+    constructor(private fb: FormBuilder) {
+    }
+
+    form = this.fb.group({
+{{#controls}}
+        {{modelName}}:[{{defaultValue}}, []],
+{{/controls}}
+        });
+
+    submit() {
+        console.warn(this.form.value);
+        this.onSubmit.emit(this.form.value);
+    }
+}
