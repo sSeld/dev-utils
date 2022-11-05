@@ -51,6 +51,7 @@
     }
 
 </script>
+
 <div class="container mx-auto px-4">
     <div id="notifications" class="grid grid-cols-3 grid-rows-1">
         <div class="w-full">
@@ -70,7 +71,7 @@
 
     <div class="grid grid-cols-2 grid-rows-1">
 
-        <div class="card w-96 bg-base-100 shadow-xl">
+        <div class="card card-compact h-96 bg-base-100 shadow-xl margin">
             <div class="card-body">
                 <h2 class="card-title">JSON</h2>
                 <textarea class="textarea textarea-primary resize-none" bind:value={leftInput}></textarea>
@@ -82,7 +83,7 @@
 
             </div>
         </div>
-        <div class="card w-96 bg-base-100 shadow-xl">
+        <div class="card card-compact h-96 bg-base-100 shadow-xl margin">
             <div class="card-body">
                 <h2 class="card-title">CSV</h2>
                 <textarea class="textarea textarea-primary resize-none" bind:value={rightInput}></textarea>
@@ -93,7 +94,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 grid-rows-1">
+        <div class="grid grid-cols-1 grid-rows-1 margin">
             <button class="btn btn-primary" on:click={clear(leftInput)} disabled="{!leftInput && !rightInput}">
                 Clear
             </button>
@@ -104,4 +105,8 @@
 </div>
 
 
-<style></style>
+<style>
+    .margin {
+        margin: 10px;
+    }
+</style>
