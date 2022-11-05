@@ -8,6 +8,7 @@
 
         console.log('running save');
         let view = {
+            name: "ProfileEdit",
             interface: {
                 type: '{name: string}'
             },
@@ -15,22 +16,29 @@
                 {
                     displayName: "Name",
                     modelName: "name",
-                    defaultValue: ""
+                    defaultValue: "",
+                    validators:["required"]
                 },
                 {
                     displayName: "Username",
                     modelName: "username",
-                    defaultValue: ""
+                    defaultValue: "",
+                    validators:["required"]
+
                 },
                 {
                     displayName: "Github profile",
                     modelName: "github",
-                    defaultValue: ""
+                    defaultValue: "",
+                    validators:["required"]
+
                 },
                 {
                     displayName: "Favorite Language",
                     modelName: "favLanguage",
-                    defaultValue: ""
+                    defaultValue: "",
+                    validators:["required"]
+
                 }
             ]
         };
