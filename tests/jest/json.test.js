@@ -1,5 +1,4 @@
 import * as converter from '../../src/shared/converter.js';
-import {re} from "@babel/core/lib/vendor/import-meta-resolve.js";
 
 class FormatScenario {
     constructor(name, columns, value) {
