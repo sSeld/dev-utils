@@ -113,3 +113,11 @@ dist
 .tern-port
 
 .idea
+
+.firebaserc
+*.drawio.svg
+
+.svelte-kit
+node_modules
+coverage
+build
