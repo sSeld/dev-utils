@@ -12,8 +12,8 @@ const firebaseConfig = {
     projectId: "jeremy-portfolio-a4990",
     storageBucket: "jeremy-portfolio-a4990.appspot.com",
     messagingSenderId: "226293347738",
-    appId: "1:226293347738:web:51b4616bf8b40ed7553623",
-    measurementId: "G-GMX0303RRM"
+    appId: "1:226293347738:web:69b565a7de9c2605553623",
+    measurementId: "G-SDRG51XWKG"
 };
 
 // Initialize Firebase
